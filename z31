@@ -1,0 +1,43 @@
+.data
+#####################################
+        #problem 1
+scanf_block:
+        .string "%c"
+
+printf_block:
+        .string "%d\n"
+
+value:
+        .long 0x00000000
+
+char:
+        .long 0x00000000
+
+.text
+.globl main
+
+main:
+        pushl %ebp
+        movl %esp, %ebp  #prolog
+#######################################
+        movl $0, value
+metka:
+        pushl $char
+        pushl $scanf_block
+        call scanf
+        addl $8, %esp
+        cmp $10, char
+        je finish
+        addl $1, value
+        jmp metka
+#######################################
+finish:
+        pushl value
+        pushl $printf_block
+        call printf
+        addl $8, %esp
+#######################################
+        movl %ebp, %esp   #epilog
+        popl %ebp
+        movl $0, %eax
+        ret
